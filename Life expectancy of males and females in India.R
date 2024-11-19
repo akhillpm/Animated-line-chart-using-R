@@ -7,7 +7,6 @@ View(data)
 colnames(data)
 
 # Libraries
-
 library(ggplot2)
 library(gganimate)
 library(babynames)
@@ -16,16 +15,18 @@ library(dplyr)
 library(reshape2)
 library(reshape) 
 
+# Select India
 data <- data %>% filter(Country=="India")
 
-data_wide <- tidyr::pivot_longer(data = data,names_to = "Gender",values_to ="Life expectancy",col=c("Female.Life.Expectancy","Male.Life.Expectancy"))
+# Converting wide format to long
+data_long <- tidyr::pivot_longer(data = data,names_to = "Gender",values_to ="Life expectancy",col=c("Female.Life.Expectancy","Male.Life.Expectancy"))
 
-data_wide [data_wide=="Female.Life.Expectancy"] <- "Female"
-data_wide [data_wide=="Male.Life.Expectancy"] <- "Male"
+data_long [data_wide=="Female.Life.Expectancy"] <- "Female"
+data_long [data_wide=="Male.Life.Expectancy"] <- "Male"
 
 
 # Plot
-animation_gif <- data_wide %>%
+animation_gif <- data_long %>%
   ggplot( aes(x=Year, y=c(`Life expectancy`),group=Gender,color=Gender)) +
   geom_line() +
   geom_point() +
